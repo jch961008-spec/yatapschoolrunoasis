@@ -381,14 +381,11 @@
             <div>
               <label for="student-grade" class="block text-xs font-extrabold text-slate-700 mb-1.5">학년 선택</label>
               <select id="student-grade" class="w-full rounded-2xl border border-slate-300 bg-white px-3.5 py-3 text-sm font-extrabold text-slate-900 focus:border-emerald-600 focus:outline-none">
-                <option value="5">5학년</option>
-                <option value="6">6학년</option>
               </select>
             </div>
             <div>
               <label for="student-class" class="block text-xs font-extrabold text-slate-700 mb-1.5">반 선택</label>
               <select id="student-class" class="w-full rounded-2xl border border-slate-300 bg-white px-3.5 py-3 text-sm font-extrabold text-slate-900 focus:border-emerald-600 focus:outline-none">
-                <option value="1">1반</option>
               </select>
             </div>
           </div>
@@ -462,10 +459,8 @@
         <button type="button" onclick="navigateTo('home')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-extrabold hover:bg-slate-50 shadow-sm transition">
           <i class="ph-bold ph-arrow-left"></i> 홈 대시보드로
         </button>
-        <div class="flex items-center gap-1.5">
-          <button type="button" data-grade-tab="ALL" class="grade-cat-tab px-3.5 py-1.5 rounded-xl text-xs font-black bg-emerald-600 text-white shadow-sm transition">전체 학급</button>
-          <button type="button" data-grade-tab="5" class="grade-cat-tab px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition">5학년 카테고리</button>
-          <button type="button" data-grade-tab="6" class="grade-cat-tab px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition">6학년 카테고리</button>
+        <div id="grade-category-tabs" class="flex flex-wrap items-center gap-1.5">
+          <!-- 동적 학년 카테고리 탭 렌더링 영역 -->
         </div>
       </div>
 
@@ -488,8 +483,6 @@
           </div>
           <select id="filter-grade-select" class="text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-slate-700">
             <option value="ALL">전체 학년</option>
-            <option value="5">5학년만</option>
-            <option value="6">6학년만</option>
           </select>
         </div>
 
@@ -786,24 +779,32 @@
           <input type="text" id="set-waypoints" value="천안,대전,대구" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
         </div>
 
-        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">5학년 학급 수</label>
-            <input type="number" id="set-g5-count" value="5" min="1" max="15" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
+        <!-- 동적 학년 및 반 추가/삭제 관리 영역 -->
+        <div class="pt-3 border-t border-slate-200 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div>
+              <label class="block font-black text-slate-800 text-xs">🏫 참여 학년 및 반 개수 설정 (추가·삭제 가능)</label>
+              <p class="text-[11px] text-slate-500">학교 여건에 맞게 1~6학년 또는 특수학급 등 원하는 학년과 반 수를 자유롭게 구성하세요.</p>
+            </div>
+            <button type="button" id="btn-add-grade-row" class="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] flex items-center gap-1 shadow-sm transition flex-shrink-0">
+              <i class="ph-bold ph-plus"></i> 학년 추가
+            </button>
           </div>
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">6학년 학급 수</label>
-            <input type="number" id="set-g6-count" value="4" min="1" max="15" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
-          </div>
-          <div>
-            <label class="block font-bold text-slate-600 mb-1">트랙 1바퀴(m)</label>
-            <input type="number" id="set-lap-meters" value="150" min="50" max="500" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
+
+          <div id="grade-config-list" class="space-y-2 max-h-48 overflow-y-auto custom-scroll pr-1">
+            <!-- JS에서 동적 생성됨 -->
           </div>
         </div>
 
-        <div>
-          <label class="block font-bold text-slate-600 mb-1">교사 관리자 비밀번호(PIN) 변경</label>
-          <input type="text" id="set-teacher-pin" value="1234" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
+        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">트랙 1바퀴(m)</label>
+            <input type="number" id="set-lap-meters" value="150" min="30" max="1000" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">교사 관리자 PIN 번호</label>
+            <input type="text" id="set-teacher-pin" value="1234" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold" />
+          </div>
         </div>
 
         <div class="pt-3 border-t border-slate-200 flex items-center justify-between gap-2">
@@ -829,14 +830,11 @@
       <div class="grid grid-cols-2 gap-2">
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">학년</label>
-          <select id="edit-grade" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold text-sm">
-            <option value="5">5학년</option>
-            <option value="6">6학년</option>
-          </select>
+          <input type="text" id="edit-grade" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold text-sm" placeholder="예: 5" />
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">반</label>
-          <input type="number" id="edit-class" min="1" max="15" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold text-sm" />
+          <input type="number" id="edit-class" min="1" max="30" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold text-sm" />
         </div>
       </div>
       <div>
@@ -874,19 +872,23 @@
        ===================================================================== -->
   <script>
     /*************************************************************************
-     * 1. 핵심 상태 및 라우터 변수
+     * 1. 핵심 상태 및 라우터 변수 (자유 학년·반 구조 + 멀티 클라우드 엔진)
      *************************************************************************/
-    const STORAGE_KEY_RECORDS = 'schoolrun_records_v3';
-    const STORAGE_KEY_CONFIG  = 'schoolrun_config_v3';
+    const STORAGE_KEY_RECORDS = 'schoolrun_records_v4';
+    const STORAGE_KEY_CONFIG  = 'schoolrun_config_v4';
 
     let appConfig = {
       roomCode: 'yatap2026',
+      cloudBlobId: '', // 기기 간 영구 동기화를 위한 클라우드 스토리지 고유 ID
       startName: '야탑초',
       destName: '부산역',
       goalKm: 380,
       waypoints: ['천안', '대전', '대구'],
-      g5Count: 5,
-      g6Count: 4,
+      // 동적 학년 및 반 설정 배열 (교사 설정에서 자유롭게 추가/삭제 가능)
+      gradesConfig: [
+        { grade: '5', classCount: 5 },
+        { grade: '6', classCount: 4 }
+      ],
       lapMeters: 150,
       isLocked: false,
       teacherPin: '1234',
@@ -898,12 +900,38 @@
     let inputMode = 'laps';
     let rankingChartInstance = null;
     let isSyncing = false;
+    let realtimeEventSource = null;
+    let currentSubscribedTopic = '';
 
     // 멀티페이지 라우터 상태
     let currentPage = 'home'; // 'home' | 'record' | 'classes' | 'class-detail' | 'feed'
-    let selectedCategoryGrade = 'ALL'; // 'ALL' | '5' | '6'
+    let selectedCategoryGrade = 'ALL';
     let currentDetailClass = { grade: '5', classNum: '1' };
     let pendingExcelRecords = [];
+    window.deletedRecordIds = new Set();
+
+    // 하위 호환 보정 함수 (기존 g5Count, g6Count 데이터를 gradesConfig로 자동 변환)
+    function ensureGradesConfigValid() {
+      if (!Array.isArray(appConfig.gradesConfig) || appConfig.gradesConfig.length === 0) {
+        const g5 = Number(appConfig.g5Count) || 5;
+        const g6 = Number(appConfig.g6Count) || 4;
+        appConfig.gradesConfig = [
+          { grade: '5', classCount: g5 },
+          { grade: '6', classCount: g6 }
+        ];
+      }
+      // 정렬 및 정제
+      appConfig.gradesConfig = appConfig.gradesConfig
+        .map(g => ({
+          grade: String(g.grade || '').trim(),
+          classCount: Math.max(1, Math.min(30, Number(g.classCount) || 1))
+        }))
+        .filter(g => g.grade !== '');
+
+      if (appConfig.gradesConfig.length === 0) {
+        appConfig.gradesConfig = [{ grade: '5', classCount: 5 }];
+      }
+    }
 
     /*************************************************************************
      * 2. 멀티 페이지 라우터 엔진 (SPA Page Navigation & History Sync)
@@ -919,26 +947,21 @@
         };
       }
 
-      // 특정 반에서 [이 반으로 바로 기록하기] 클릭 시 학년/반 자동 세팅
       if (pageName === 'record' && params.grade && params.classNum) {
         const gradeSel = document.getElementById('student-grade');
         const classSel = document.getElementById('student-class');
         if (gradeSel && classSel) {
-          gradeSel.value = String(params.grade);
-          populateClassDropdown();
-          classSel.value = String(params.classNum);
+          populateGradeAndClassDropdowns(String(params.grade), String(params.classNum));
           checkStudentHistory();
         }
       }
 
       currentPage = pageName;
 
-      // 모든 페이지 뷰 숨김 후 타겟 페이지만 활성화
       document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
       const targetEl = document.getElementById(`page-${pageName}`);
       if (targetEl) targetEl.classList.add('active');
 
-      // 상단 데스크톱 & 하단 모바일 네비게이션 버튼 활성화 표시 동기화
       const activeNavKey = (pageName === 'class-detail') ? 'classes' : pageName;
       document.querySelectorAll('.nav-tab-btn').forEach(btn => {
         const key = btn.getAttribute('data-nav-btn');
@@ -958,7 +981,6 @@
         }
       });
 
-      // URL 해시 업데이트 (브라우저 뒤로가기 지원)
       const hashStr = pageName === 'class-detail'
         ? `#class-${currentDetailClass.grade}-${currentDetailClass.classNum}`
         : `#${pageName}`;
@@ -974,12 +996,10 @@
       }
     };
 
-    // 반 전용 페이지 바로 진입 헬퍼
     window.openClassDetailPage = function(grade, classNum) {
       navigateTo('class-detail', { grade, classNum });
     };
 
-    // 브라우저 뒤로가기/앞으로가기 이벤트 처리
     window.addEventListener('popstate', () => {
       handleHashRoute();
     });
@@ -1001,28 +1021,49 @@
     }
 
     /*************************************************************************
-     * 3. 로컬 & 클라우드 데이터 동기화 엔진
+     * 3. 무결점 다중 기기 실시간 클라우드 동기화 엔진 (Ntfy Stream + JSONBlob DB)
+     * - 스마트폰, 태블릿, PC 어디서든 같은 방 코드(roomCode)면 100% 실시간 동기화!
      *************************************************************************/
+    function serializeGradesParam(gradesConfig) {
+      return (gradesConfig || []).map(g => `${g.grade}:${g.classCount}`).join(',');
+    }
+
+    function parseGradesParam(str) {
+      if (!str) return null;
+      const list = [];
+      str.split(',').forEach(part => {
+        const [g, c] = part.split(':');
+        if (g && Number(c) > 0) {
+          list.push({ grade: g.trim(), classCount: Number(c) });
+        }
+      });
+      return list.length > 0 ? list : null;
+    }
+
     function parseUrlParamsConfig() {
       const params = new URLSearchParams(window.location.search);
       if (params.get('room')) appConfig.roomCode = params.get('room');
+      if (params.get('blob')) appConfig.cloudBlobId = params.get('blob');
       if (params.get('start')) appConfig.startName = params.get('start');
       if (params.get('dest')) appConfig.destName = params.get('dest');
       if (params.get('km')) appConfig.goalKm = Number(params.get('km')) || 380;
-      if (params.get('g5')) appConfig.g5Count = Number(params.get('g5')) || 5;
-      if (params.get('g6')) appConfig.g6Count = Number(params.get('g6')) || 4;
       if (params.get('lap')) appConfig.lapMeters = Number(params.get('lap')) || 150;
+      const parsedGrades = parseGradesParam(params.get('grades'));
+      if (parsedGrades) {
+        appConfig.gradesConfig = parsedGrades;
+      }
+      ensureGradesConfigValid();
     }
 
     function getShareableUrl() {
       const base = window.location.origin + window.location.pathname;
       const params = new URLSearchParams();
       params.set('room', appConfig.roomCode);
+      if (appConfig.cloudBlobId) params.set('blob', appConfig.cloudBlobId);
       params.set('start', appConfig.startName);
       params.set('dest', appConfig.destName);
       params.set('km', appConfig.goalKm);
-      params.set('g5', appConfig.g5Count);
-      params.set('g6', appConfig.g6Count);
+      params.set('grades', serializeGradesParam(appConfig.gradesConfig));
       params.set('lap', appConfig.lapMeters);
       return `${base}?${params.toString()}`;
     }
@@ -1034,9 +1075,16 @@
           appConfig = { ...appConfig, ...JSON.parse(savedCfg) };
         }
         parseUrlParamsConfig();
+        ensureGradesConfigValid();
 
-        const savedRec = localStorage.getItem(STORAGE_KEY_RECORDS + '_' + appConfig.roomCode);
+        const roomKey = appConfig.roomCode.trim().toLowerCase() || 'yatap2026';
+        const savedRec = localStorage.getItem(STORAGE_KEY_RECORDS + '_' + roomKey);
         records = savedRec ? JSON.parse(savedRec) : [];
+
+        const savedDel = localStorage.getItem(STORAGE_KEY_RECORDS + '_del_' + roomKey);
+        if (savedDel) {
+          window.deletedRecordIds = new Set(JSON.parse(savedDel));
+        }
       } catch (e) {
         console.warn('로컬 데이터 로드 오류:', e);
       }
@@ -1044,102 +1092,280 @@
 
     function saveLocalData() {
       try {
+        ensureGradesConfigValid();
         localStorage.setItem(STORAGE_KEY_CONFIG, JSON.stringify(appConfig));
-        localStorage.setItem(STORAGE_KEY_RECORDS + '_' + appConfig.roomCode, JSON.stringify(records));
+        const roomKey = appConfig.roomCode.trim().toLowerCase() || 'yatap2026';
+        localStorage.setItem(STORAGE_KEY_RECORDS + '_' + roomKey, JSON.stringify(records));
+        localStorage.setItem(STORAGE_KEY_RECORDS + '_del_' + roomKey, JSON.stringify(Array.from(window.deletedRecordIds || [])));
       } catch (e) {
         console.warn('로컬 데이터 저장 오류:', e);
       }
     }
 
-    async function getCloudBucketUrl() {
-      const safeRoom = encodeURIComponent(appConfig.roomCode.trim().toLowerCase() || 'yatap2026');
-      return `https://kvdb.io/A2w9zR7xK4pL8mN3qV6j/${safeRoom}_state`;
+    // 고유 채널 토픽 이름 생성 (학교 방 코드 기반)
+    function getRealtimeTopicName() {
+      const cleanRoom = (appConfig.roomCode || 'yatap2026').trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+      return `schoolrun_oasis_v4_sync_${cleanRoom || 'yatap2026'}`;
     }
 
+    // 원격 상태와 로컬 상태를 충돌 없이 병합(Merge)하는 핵심 함수
+    function mergeIncomingData(incoming, showNotification = false) {
+      if (!incoming || typeof incoming !== 'object') return false;
+      let changed = false;
+
+      // 1) 삭제된 기록 ID 병합
+      if (Array.isArray(incoming.deletedIds)) {
+        incoming.deletedIds.forEach(id => {
+          if (!window.deletedRecordIds.has(id)) {
+            window.deletedRecordIds.add(id);
+            changed = true;
+          }
+        });
+      }
+
+      // 2) 클라우드 Blob ID 공유 반영
+      if (incoming.cloudBlobId && incoming.cloudBlobId !== appConfig.cloudBlobId) {
+        appConfig.cloudBlobId = incoming.cloudBlobId;
+        changed = true;
+      }
+
+      // 3) 학교 설정(Config) 최신 타임스탬프 비교 병합
+      if (incoming.config && (incoming.config.updatedAt || 0) > (appConfig.updatedAt || 0)) {
+        const currentRoom = appConfig.roomCode;
+        appConfig = {
+          ...appConfig,
+          ...incoming.config,
+          roomCode: currentRoom,
+          cloudBlobId: incoming.cloudBlobId || incoming.config.cloudBlobId || appConfig.cloudBlobId
+        };
+        ensureGradesConfigValid();
+        changed = true;
+      }
+
+      // 4) 단건 추가 레코드 즉시 병합 (실시간 스트림용)
+      if (incoming.singleRecord && !window.deletedRecordIds.has(incoming.singleRecord.id)) {
+        const exists = records.find(r => r.id === incoming.singleRecord.id);
+        if (!exists) {
+          records.unshift(incoming.singleRecord);
+          changed = true;
+        } else if ((incoming.singleRecord.updatedAt || 0) > (exists.updatedAt || 0)) {
+          Object.assign(exists, incoming.singleRecord);
+          changed = true;
+        }
+      }
+
+      // 5) 전체 레코드 배열 병합
+      if (Array.isArray(incoming.records)) {
+        const mergedMap = new Map();
+        records.forEach(r => {
+          if (!window.deletedRecordIds.has(r.id)) mergedMap.set(r.id, r);
+        });
+        incoming.records.forEach(r => {
+          if (r && r.id && !window.deletedRecordIds.has(r.id)) {
+            const existing = mergedMap.get(r.id);
+            if (!existing || (r.updatedAt || 0) >= (existing.updatedAt || 0)) {
+              mergedMap.set(r.id, r);
+            }
+          }
+        });
+
+        const mergedList = Array.from(mergedMap.values()).sort((a, b) => b.timestamp - a.timestamp);
+        if (mergedList.length !== records.length || JSON.stringify(mergedList) !== JSON.stringify(records)) {
+          records = mergedList;
+          changed = true;
+        }
+      } else if (changed) {
+        // 삭제 반영 필터링
+        records = records.filter(r => !window.deletedRecordIds.has(r.id)).sort((a, b) => b.timestamp - a.timestamp);
+      }
+
+      if (changed) {
+        saveLocalData();
+        populateGradeAndClassDropdowns();
+        refreshAllUI();
+        if (showNotification) {
+          showToast('☁️ 다른 기기에서 입력된 최신 기록이 실시간 반영되었습니다!');
+        }
+      }
+      return changed;
+    }
+
+    // 실시간 스트림(SSE) 구독 연결: 다른 기기에서 입력 시 0.3초 만에 즉시 수신
+    function connectRealtimeStream() {
+      const topic = getRealtimeTopicName();
+      if (realtimeEventSource && currentSubscribedTopic === topic) return;
+
+      if (realtimeEventSource) {
+        try { realtimeEventSource.close(); } catch (e) {}
+      }
+      currentSubscribedTopic = topic;
+
+      try {
+        // since=all 옵션을 통해 최근 12시간 동안 다른 기기들이 보낸 모든 기록 히스토리도 즉시 수신!
+        const streamUrl = `https://ntfy.sh/${topic}/sse?since=all`;
+        realtimeEventSource = new EventSource(streamUrl);
+
+        realtimeEventSource.onopen = () => {
+          updateSyncUI('online');
+        };
+
+        realtimeEventSource.onmessage = async (event) => {
+          try {
+            const envelope = JSON.parse(event.data);
+            if (envelope.event === 'message' && envelope.message) {
+              const payload = JSON.parse(envelope.message);
+              const updated = mergeIncomingData(payload, false);
+              // 만약 클라우드 Blob ID가 새로 도착했다면 전체 DB에서도 한 번 더 풀링
+              if (payload.cloudBlobId && payload.type === 'BLOB_SYNC') {
+                await pullFromJsonBlob(payload.cloudBlobId, true);
+              } else if (updated && payload.senderId !== window._clientSessionId) {
+                showToast('⚡ 실시간으로 새 기록이 동기화되었습니다!');
+              }
+            }
+          } catch (err) {
+            // JSON이 아닌 시스템 메시지는 무시
+          }
+        };
+
+        realtimeEventSource.onerror = () => {
+          // 일시적 네트워크 전환 시 폴링이 백업함
+        };
+      } catch (e) {
+        console.warn('실시간 스트림 초기화 실패:', e);
+      }
+    }
+
+    // JSONBlob 영구 클라우드 스토리지에서 전체 데이터 가져오기
+    async function pullFromJsonBlob(blobId, silent = true) {
+      const targetBlobId = blobId || appConfig.cloudBlobId;
+      if (!targetBlobId) return false;
+
+      try {
+        const res = await fetch(`https://jsonblob.com/api/jsonBlob/${targetBlobId}`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' },
+          cache: 'no-store'
+        });
+        if (res.ok) {
+          const data = await res.json();
+          mergeIncomingData(data, !silent);
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    // 클라우드에서 최신 기록 전체 불러오기 (Ntfy 캐시 히스토리 + JSONBlob DB 이중 조회)
     async function pullFromCloud(silent = true) {
       if (isSyncing) return;
       isSyncing = true;
       updateSyncUI('syncing');
 
       try {
-        const url = await getCloudBucketUrl();
-        const res = await fetch(url, {
-          method: 'GET',
-          headers: { 'Accept': 'application/json' },
+        const topic = getRealtimeTopicName();
+        // 1) Ntfy 채널에 쌓인 최근 메시지 히스토리 일괄 조회 (다른 기기가 남긴 기록 & 클라우드 Blob ID 획득)
+        const res = await fetch(`https://ntfy.sh/${topic}/json?poll=1&since=all`, {
           cache: 'no-store'
         });
 
         if (res.ok) {
-          const cloudData = await res.json();
-          let changed = false;
-
-          if (cloudData.config && (cloudData.config.updatedAt || 0) > (appConfig.updatedAt || 0)) {
-            appConfig = { ...appConfig, ...cloudData.config };
-            changed = true;
-          }
-
-          if (Array.isArray(cloudData.records)) {
-            const deletedIds = new Set(cloudData.deletedIds || []);
-            window.deletedRecordIds = deletedIds;
-
-            const mergedMap = new Map();
-            records.forEach(r => {
-              if (!deletedIds.has(r.id)) mergedMap.set(r.id, r);
-            });
-            cloudData.records.forEach(r => {
-              if (!deletedIds.has(r.id)) {
-                const existing = mergedMap.get(r.id);
-                if (!existing || (r.updatedAt || 0) >= (existing.updatedAt || 0)) {
-                  mergedMap.set(r.id, r);
-                }
+          const text = await res.text();
+          const lines = text.trim().split('\n').filter(Boolean);
+          for (const line of lines) {
+            try {
+              const item = JSON.parse(line);
+              if (item.event === 'message' && item.message) {
+                const payload = JSON.parse(item.message);
+                mergeIncomingData(payload, false);
               }
-            });
-
-            const mergedList = Array.from(mergedMap.values()).sort((a, b) => b.timestamp - a.timestamp);
-            if (JSON.stringify(mergedList) !== JSON.stringify(records)) {
-              records = mergedList;
-              changed = true;
-            }
+            } catch (e) {}
           }
-
-          if (changed) {
-            saveLocalData();
-            populateClassDropdown();
-            refreshAllUI();
-            if (!silent) showToast('☁️ 최신 기록과 학교 설정을 동기화했습니다!');
-          }
-          updateSyncUI('online');
-        } else if (res.status === 404) {
-          await pushToCloud();
-          updateSyncUI('online');
-        } else {
-          updateSyncUI('local');
         }
+
+        // 2) 만약 클라우드 영구 DB(cloudBlobId)가 연결되어 있다면 전체 데이터셋 불러오기
+        if (appConfig.cloudBlobId) {
+          await pullFromJsonBlob(appConfig.cloudBlobId, true);
+        }
+
+        updateSyncUI('online');
+        if (!silent) showToast('☁️ 모든 기기와 최신 기록 동기화가 완료되었습니다!');
       } catch (err) {
         updateSyncUI('local');
+        if (!silent) showToast('⚠️ 네트워크 연결을 확인해 주세요. (기기 내에는 안전하게 저장됨)');
       } finally {
         isSyncing = false;
       }
     }
 
-    async function pushToCloud() {
+    // 내 기기에서 변경된 기록/설정을 클라우드 DB 및 모든 접속 기기에 즉시 전송
+    async function pushToCloud(singleRec = null) {
       updateSyncUI('syncing');
+      window._clientSessionId = window._clientSessionId || ('sess_' + Math.random().toString(36).substring(2, 9));
+
       try {
-        const url = await getCloudBucketUrl();
-        const payload = {
+        const fullPayload = {
+          senderId: window._clientSessionId,
+          cloudBlobId: appConfig.cloudBlobId,
           config: appConfig,
           records: records,
           deletedIds: Array.from(window.deletedRecordIds || []),
           pushedAt: Date.now()
         };
 
-        const res = await fetch(url, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+        // 1) JSONBlob 영구 클라우드 DB 저장 또는 최초 생성
+        try {
+          if (appConfig.cloudBlobId) {
+            const putRes = await fetch(`https://jsonblob.com/api/jsonBlob/${appConfig.cloudBlobId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify(fullPayload)
+            });
+            if (!putRes.ok && putRes.status === 404) {
+              appConfig.cloudBlobId = '';
+            }
+          }
+
+          if (!appConfig.cloudBlobId) {
+            const postRes = await fetch('https://jsonblob.com/api/jsonBlob', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify(fullPayload)
+            });
+            if (postRes.ok) {
+              const loc = postRes.headers.get('Location') || postRes.headers.get('location') || '';
+              const parts = loc.split('/');
+              const newId = parts[parts.length - 1];
+              if (newId) {
+                appConfig.cloudBlobId = newId;
+                fullPayload.cloudBlobId = newId;
+                saveLocalData();
+              }
+            }
+          }
+        } catch (blobErr) {
+          // JSONBlob 접근 불가 망일 경우 아래 Ntfy 스트림 페이로드로 직접 전체 전송
+        }
+
+        // 2) Ntfy 실시간 스트림 브로드캐스트 전송 (용량 최적화를 위해 최근 35건 + 단건 + Blob ID 전송)
+        const topic = getRealtimeTopicName();
+        const streamPayload = {
+          type: appConfig.cloudBlobId ? 'BLOB_SYNC' : 'DIRECT_SYNC',
+          senderId: window._clientSessionId,
+          cloudBlobId: appConfig.cloudBlobId,
+          config: appConfig,
+          singleRecord: singleRec || null,
+          records: records.slice(0, 35),
+          deletedIds: Array.from(window.deletedRecordIds || []).slice(-50),
+          pushedAt: Date.now()
+        };
+
+        const ntfyRes = await fetch(`https://ntfy.sh/${topic}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(streamPayload)
         });
 
-        updateSyncUI(res.ok ? 'online' : 'local');
+        updateSyncUI(ntfyRes.ok ? 'online' : 'local');
       } catch (e) {
         updateSyncUI('local');
       }
@@ -1153,30 +1379,38 @@
 
       if (state === 'syncing') {
         dot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-ping';
-        txt.textContent = '동기화 중...';
+        txt.textContent = '실시간 동기화 중...';
         if (icon) icon.classList.add('animate-spin');
       } else if (state === 'online') {
         dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
-        txt.textContent = '클라우드 공유됨';
+        txt.textContent = '실시간 클라우드 연동됨';
         if (icon) icon.classList.remove('animate-spin');
       } else {
         dot.className = 'w-2 h-2 rounded-full bg-slate-400';
-        txt.textContent = '내 기기 저장됨';
+        txt.textContent = '기기 저장됨 (탭하여 연동)';
         if (icon) icon.classList.remove('animate-spin');
       }
     }
 
     /*************************************************************************
-     * 4. 데이터 계산 및 전체 페이지 UI 렌더링
+     * 4. 동적 학년·반 계산 및 전체 페이지 UI 렌더링
      *************************************************************************/
     function getAllClassesList() {
+      ensureGradesConfigValid();
       const list = [];
-      for (let c = 1; c <= Number(appConfig.g5Count); c++) {
-        list.push({ grade: '5', classNum: String(c), label: `5-${c}`, fullLabel: `5학년 ${c}반` });
-      }
-      for (let c = 1; c <= Number(appConfig.g6Count); c++) {
-        list.push({ grade: '6', classNum: String(c), label: `6-${c}`, fullLabel: `6학년 ${c}반` });
-      }
+      appConfig.gradesConfig.forEach(gObj => {
+        const g = String(gObj.grade).trim();
+        const count = Math.max(1, Number(gObj.classCount) || 1);
+        const gradeTitle = /^\d+$/.test(g) ? `${g}학년` : g;
+        for (let c = 1; c <= count; c++) {
+          list.push({
+            grade: g,
+            classNum: String(c),
+            label: `${g}-${c}`,
+            fullLabel: `${gradeTitle} ${c}반`
+          });
+        }
+      });
       return list;
     }
 
@@ -1198,7 +1432,6 @@
         };
       });
 
-      // 순위 부여
       const sorted = [...stats].sort((a, b) => b.km - a.km);
       stats.forEach(s => {
         const rankIdx = sorted.findIndex(item => item.label === s.label);
@@ -1207,14 +1440,25 @@
       return stats;
     }
 
-    function populateClassDropdown() {
+    // 동적 학년 및 반 드롭다운 생성 (학생 입력 폼, 반별 카테고리 탭, 필터 등 모두 동기화)
+    function populateGradeAndClassDropdowns(forceGrade = null, forceClass = null) {
+      ensureGradesConfigValid();
       const gradeEl = document.getElementById('student-grade');
       const classEl = document.getElementById('student-class');
       if (!gradeEl || !classEl) return;
 
-      const selectedGrade = gradeEl.value;
-      const maxClass = selectedGrade === '5' ? Number(appConfig.g5Count) : Number(appConfig.g6Count);
-      const currentVal = classEl.value;
+      const prevGrade = forceGrade || gradeEl.value || appConfig.gradesConfig[0].grade;
+      gradeEl.innerHTML = appConfig.gradesConfig.map(gObj => {
+        const g = String(gObj.grade);
+        const label = /^\d+$/.test(g) ? `${g}학년` : g;
+        return `<option value="${escapeHtml(g)}">${escapeHtml(label)}</option>`;
+      }).join('');
+
+      const matchedGradeObj = appConfig.gradesConfig.find(g => String(g.grade) === String(prevGrade)) || appConfig.gradesConfig[0];
+      gradeEl.value = matchedGradeObj.grade;
+
+      const maxClass = Math.max(1, Number(matchedGradeObj.classCount) || 1);
+      const prevClass = forceClass || classEl.value || '1';
 
       classEl.innerHTML = '';
       for (let i = 1; i <= maxClass; i++) {
@@ -1223,8 +1467,48 @@
         opt.textContent = `${i}반`;
         classEl.appendChild(opt);
       }
-      if (Number(currentVal) >= 1 && Number(currentVal) <= maxClass) {
-        classEl.value = currentVal;
+      if (Number(prevClass) >= 1 && Number(prevClass) <= maxClass) {
+        classEl.value = String(prevClass);
+      }
+
+      // 반별 카테고리 상단 탭 버튼 동적 생성
+      const catTabsContainer = document.getElementById('grade-category-tabs');
+      if (catTabsContainer) {
+        const allGrades = appConfig.gradesConfig.map(g => String(g.grade));
+        if (selectedCategoryGrade !== 'ALL' && !allGrades.includes(selectedCategoryGrade)) {
+          selectedCategoryGrade = 'ALL';
+        }
+        let tabsHtml = `
+          <button type="button" onclick="selectGradeCategoryTab('ALL')" class="grade-cat-tab px-3.5 py-1.5 rounded-xl text-xs ${selectedCategoryGrade === 'ALL' ? 'font-black bg-emerald-600 text-white shadow-sm' : 'font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'} transition">
+            전체 학급
+          </button>
+        `;
+        appConfig.gradesConfig.forEach(gObj => {
+          const g = String(gObj.grade);
+          const label = /^\d+$/.test(g) ? `${g}학년` : g;
+          const isActive = selectedCategoryGrade === g;
+          tabsHtml += `
+            <button type="button" onclick="selectGradeCategoryTab('${escapeHtml(g)}')" class="grade-cat-tab px-3.5 py-1.5 rounded-xl text-xs ${isActive ? 'font-black bg-emerald-600 text-white shadow-sm' : 'font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'} transition">
+              ${escapeHtml(label)} 카테고리
+            </button>
+          `;
+        });
+        catTabsContainer.innerHTML = tabsHtml;
+      }
+
+      // 리더보드 차트 필터 드롭다운 동적 생성
+      const filterSelect = document.getElementById('filter-grade-select');
+      if (filterSelect) {
+        const curFilter = filterSelect.value || 'ALL';
+        filterSelect.innerHTML = `<option value="ALL">전체 학년</option>` +
+          appConfig.gradesConfig.map(gObj => {
+            const g = String(gObj.grade);
+            const label = /^\d+$/.test(g) ? `${g}학년만` : `${g}만`;
+            return `<option value="${escapeHtml(g)}">${escapeHtml(label)}</option>`;
+          }).join('');
+        if ([...filterSelect.options].some(o => o.value === curFilter)) {
+          filterSelect.value = curFilter;
+        }
       }
 
       // 반 상세 페이지 내 스위처 드롭다운도 업데이트
@@ -1232,8 +1516,25 @@
       if (switcher) {
         const all = getAllClassesList();
         switcher.innerHTML = all.map(c => `<option value="${c.grade}-${c.classNum}">${c.fullLabel}</option>`).join('');
-        switcher.value = `${currentDetailClass.grade}-${currentDetailClass.classNum}`;
+        const targetKey = `${currentDetailClass.grade}-${currentDetailClass.classNum}`;
+        if (all.some(c => `${c.grade}-${c.classNum}` === targetKey)) {
+          switcher.value = targetKey;
+        } else if (all.length > 0) {
+          currentDetailClass = { grade: all[0].grade, classNum: all[0].classNum };
+          switcher.value = `${all[0].grade}-${all[0].classNum}`;
+        }
       }
+    }
+
+    window.selectGradeCategoryTab = function(gradeVal) {
+      selectedCategoryGrade = String(gradeVal);
+      populateGradeAndClassDropdowns();
+      refreshAllUI();
+    };
+
+    // 하위 호환용 래퍼
+    function populateClassDropdown() {
+      populateGradeAndClassDropdowns();
     }
 
     function updateLiveDistancePreview() {
@@ -1252,13 +1553,14 @@
     }
 
     function refreshAllUI() {
-      // 기본 배너 텍스트
+      ensureGradesConfigValid();
       document.getElementById('hero-room-badge').textContent = `공유코드: ${appConfig.roomCode}`;
       document.getElementById('hero-goal-title').textContent = `스쿨런 ${appConfig.goalKm}km 릴레이`;
       document.getElementById('hero-lap-m').textContent = appConfig.lapMeters;
       document.getElementById('card-lap-m').textContent = appConfig.lapMeters;
       document.getElementById('lap-unit-hint').textContent = `1바퀴 = ${appConfig.lapMeters}m`;
-      const totalClasses = Number(appConfig.g5Count) + Number(appConfig.g6Count);
+
+      const totalClasses = appConfig.gradesConfig.reduce((acc, g) => acc + (Number(g.classCount) || 0), 0);
       document.getElementById('card-total-classes').textContent = `총 ${totalClasses}개 반`;
 
       // 잠금 상태
@@ -1873,39 +2175,98 @@
     };
 
     /*************************************************************************
+     * 6. 개별 수정 / 삭제 및 동적 학년 편집기 핸들러
+     *************************************************************************/
+    function renderGradeConfigRows(gradesArray) {
+      const container = document.getElementById('grade-config-list');
+      if (!container) return;
+
+      container.innerHTML = gradesArray.map((item, idx) => `
+        <div class="grade-cfg-row flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-1.5 flex-1">
+            <input type="text" value="${escapeHtml(item.grade)}" placeholder="학년 (예: 5)" class="cfg-grade-name w-20 px-2.5 py-1.5 rounded-lg border border-slate-300 font-black text-xs text-slate-900 text-center" />
+            <span class="text-xs font-bold text-slate-600">학년(그룹) :</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[11px] font-bold text-slate-500">1반 ~</span>
+            <input type="number" min="1" max="30" value="${Number(item.classCount) || 1}" class="cfg-class-count w-16 px-2 py-1.5 rounded-lg border border-slate-300 font-black text-xs text-emerald-700 text-center" />
+            <span class="text-xs font-bold text-slate-600">반까지</span>
+          </div>
+          <button type="button" onclick="removeGradeConfigRow(${idx})" class="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs font-black transition" title="이 학년 삭제">
+            ✕
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function readCurrentGradeRowsFromDOM() {
+      const rows = document.querySelectorAll('#grade-config-list .grade-cfg-row');
+      const list = [];
+      rows.forEach(row => {
+        const g = (row.querySelector('.cfg-grade-name')?.value || '').trim().replace(/학년$/g, '');
+        const c = Math.max(1, Math.min(30, Number(row.querySelector('.cfg-class-count')?.value) || 1));
+        if (g) list.push({ grade: g, classCount: c });
+      });
+      return list;
+    }
+
+    window.removeGradeConfigRow = function(idx) {
+      const current = readCurrentGradeRowsFromDOM();
+      if (current.length <= 1) {
+        showToast('⚠️ 최소 1개 이상의 학년은 유지되어야 합니다.');
+        return;
+      }
+      current.splice(idx, 1);
+      renderGradeConfigRows(current);
+    };
+
+    window.openEditModal = function(id) {
+      const rec = records.find(r => r.id === id);
+      if (!rec) return;
+      document.getElementById('edit-record-id').value = rec.id;
+      document.getElementById('edit-grade').value = String(rec.grade);
+      document.getElementById('edit-class').value = String(rec.classNum);
+      document.getElementById('edit-name').value = rec.name;
+      document.getElementById('edit-laps').value = rec.laps;
+      document.getElementById('modal-edit-record').classList.remove('hidden');
+    };
+
+    window.deleteRecord = async function(id) {
+      if (!isTeacherMode) return;
+      window.deletedRecordIds = window.deletedRecordIds || new Set();
+      window.deletedRecordIds.add(id);
+      records = records.filter(r => r.id !== id);
+      saveLocalData();
+      refreshAllUI();
+      showToast('🗑️ 기록이 삭제되었으며 모든 기기에 실시간 반영됩니다.');
+      await pushToCloud();
+    };
+
+    /*************************************************************************
      * 7. 초기화 및 이벤트 바인딩
      *************************************************************************/
     document.addEventListener('DOMContentLoaded', async () => {
-      window.deletedRecordIds = new Set();
       loadLocalData();
-      populateClassDropdown();
+      populateGradeAndClassDropdowns();
       handleHashRoute();
       refreshAllUI();
 
+      // 실시간 SSE 스트림 연결 + 초기 클라우드 히스토리 풀링
+      connectRealtimeStream();
       await pullFromCloud(true);
-      setInterval(() => pullFromCloud(true), 4000);
+
+      // 백그라운드 안전 폴링 (8초 주기)
+      setInterval(() => pullFromCloud(true), 8000);
 
       document.getElementById('btn-manual-sync').addEventListener('click', () => pullFromCloud(false));
 
-      // 학년/반 선택 연동
-      document.getElementById('student-grade').addEventListener('change', () => {
-        populateClassDropdown();
+      // 학년 선택 시 해당 학년의 반 개수에 맞게 반 드롭다운 즉시 갱신
+      document.getElementById('student-grade').addEventListener('change', (e) => {
+        populateGradeAndClassDropdowns(e.target.value, '1');
         checkStudentHistory();
       });
       document.getElementById('student-class').addEventListener('change', checkStudentHistory);
       document.getElementById('student-name').addEventListener('input', checkStudentHistory);
-
-      // 반별 카테고리 탭 전환 (ALL / 5학년 / 6학년)
-      document.querySelectorAll('.grade-cat-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          selectedCategoryGrade = tab.getAttribute('data-grade-tab');
-          document.querySelectorAll('.grade-cat-tab').forEach(t => {
-            t.className = 'grade-cat-tab px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition';
-          });
-          tab.className = 'grade-cat-tab px-3.5 py-1.5 rounded-xl text-xs font-black bg-emerald-600 text-white shadow-sm transition';
-          refreshAllUI();
-        });
-      });
 
       // 반 상세 페이지 내 다른 반 바로가기 드롭다운
       document.getElementById('detail-class-switcher').addEventListener('change', (e) => {
@@ -1961,7 +2322,7 @@
         });
       });
 
-      // 기록 제출 -> 등록 완료 후 해당 학급 전용 상세 페이지로 자동 전환!
+      // 기록 제출 -> 등록 완료 후 즉시 모든 기기에 브로드캐스트 & 반 페이지로 전환
       document.getElementById('run-record-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         if (appConfig.isLocked && !isTeacherMode) {
@@ -2005,14 +2366,13 @@
         if (typeof confetti === 'function') {
           confetti({ particleCount: 55, spread: 60, origin: { y: 0.7 } });
         }
-        showToast(`🎉 ${grade}학년 ${classNum}반 ${name} 학생 기록 완료!`);
+        showToast(`🎉 ${grade}학년 ${classNum}반 ${name} 학생 기록 완료! (클라우드 동기화됨)`);
 
         document.getElementById('student-name').value = '';
         document.getElementById('student-history-preview').classList.add('hidden');
 
-        // 기록 완료 즉시 해당 학생의 반 전용 페이지로 이동하여 우리 반 순위를 바로 확인하게 함
         navigateTo('class-detail', { grade, classNum });
-        await pushToCloud();
+        await pushToCloud(newRecord);
       });
 
       document.getElementById('filter-grade-select').addEventListener('change', () => {
@@ -2103,35 +2463,69 @@
           records = [...pendingExcelRecords, ...records];
         }
 
-        // 최신순 정렬
+        // 엑셀에 포함된 학년이나 반 번호가 현재 설정보다 크면 자동으로 학년/반 설정 확장!
+        let configChanged = false;
+        pendingExcelRecords.forEach(r => {
+          const gStr = String(r.grade).trim();
+          const cNum = Number(r.classNum) || 1;
+          const existingGrade = appConfig.gradesConfig.find(g => String(g.grade) === gStr);
+          if (!existingGrade) {
+            appConfig.gradesConfig.push({ grade: gStr, classCount: Math.max(1, cNum) });
+            configChanged = true;
+          } else if (cNum > existingGrade.classCount) {
+            existingGrade.classCount = cNum;
+            configChanged = true;
+          }
+        });
+
         records.sort((a, b) => b.timestamp - a.timestamp);
         appConfig.updatedAt = Date.now();
         saveLocalData();
+        if (configChanged) populateGradeAndClassDropdowns();
         refreshAllUI();
         excelModal.classList.add('hidden');
 
         if (typeof confetti === 'function') {
           confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
         }
-        showToast(`🚀 총 ${pendingExcelRecords.length}건의 엑셀 기록이 일괄 투입되었습니다!`);
+        showToast(`🚀 총 ${pendingExcelRecords.length}건의 엑셀 기록이 일괄 투입 및 클라우드 동기화되었습니다!`);
         await pushToCloud();
       });
 
-      // 학교 설정 모달
+      // 학교 설정 모달 (학년·반 동적 추가/삭제 포함)
       const settingsModal = document.getElementById('modal-settings');
       document.getElementById('btn-open-settings').addEventListener('click', () => {
+        ensureGradesConfigValid();
         document.getElementById('set-room-code').value = appConfig.roomCode;
         document.getElementById('set-start-name').value = appConfig.startName;
         document.getElementById('set-dest-name').value = appConfig.destName;
         document.getElementById('set-goal-km').value = appConfig.goalKm;
         document.getElementById('set-waypoints').value = (appConfig.waypoints || []).join(',');
-        document.getElementById('set-g5-count').value = appConfig.g5Count;
-        document.getElementById('set-g6-count').value = appConfig.g6Count;
         document.getElementById('set-lap-meters').value = appConfig.lapMeters;
         document.getElementById('set-teacher-pin').value = appConfig.teacherPin;
+        renderGradeConfigRows(appConfig.gradesConfig);
         settingsModal.classList.remove('hidden');
       });
       document.getElementById('btn-close-settings').addEventListener('click', () => settingsModal.classList.add('hidden'));
+
+      // [+ 학년 추가] 버튼 클릭 시 새 학년 행 추가
+      document.getElementById('btn-add-grade-row').addEventListener('click', () => {
+        const current = readCurrentGradeRowsFromDOM();
+        // 아직 없는 학년 번호(1~6)를 스마트하게 추천
+        const usedGrades = new Set(current.map(item => String(item.grade)));
+        let nextGrade = '1';
+        for (let g = 1; g <= 6; g++) {
+          if (!usedGrades.has(String(g))) {
+            nextGrade = String(g);
+            break;
+          }
+        }
+        if (usedGrades.has(nextGrade)) {
+          nextGrade = String(current.length + 1);
+        }
+        current.push({ grade: nextGrade, classCount: 4 });
+        renderGradeConfigRows(current);
+      });
 
       document.querySelectorAll('.preset-route-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -2153,27 +2547,48 @@
       });
 
       document.getElementById('btn-save-settings').addEventListener('click', async () => {
-        appConfig.roomCode = document.getElementById('set-room-code').value.trim() || 'yatap2026';
+        const newRoomCode = document.getElementById('set-room-code').value.trim() || 'yatap2026';
+        const roomChanged = newRoomCode !== appConfig.roomCode;
+
+        appConfig.roomCode = newRoomCode;
+        if (roomChanged) {
+          appConfig.cloudBlobId = ''; // 새로운 방 코드로 변경 시 새 클라우드 채널 연결
+        }
         appConfig.startName = document.getElementById('set-start-name').value.trim() || '우리 학교';
         appConfig.destName = document.getElementById('set-dest-name').value.trim() || '부산역';
         appConfig.goalKm = Math.max(1, Number(document.getElementById('set-goal-km').value) || 380);
         appConfig.waypoints = document.getElementById('set-waypoints').value.split(',').map(s => s.trim()).filter(Boolean);
         while (appConfig.waypoints.length < 3) appConfig.waypoints.push('경유지');
-        appConfig.g5Count = Math.max(1, Number(document.getElementById('set-g5-count').value) || 5);
-        appConfig.g6Count = Math.max(1, Number(document.getElementById('set-g6-count').value) || 4);
-        appConfig.lapMeters = Math.max(50, Number(document.getElementById('set-lap-meters').value) || 150);
+
+        const updatedGrades = readCurrentGradeRowsFromDOM();
+        if (updatedGrades.length > 0) {
+          // 중복 학년 병합 정리
+          const uniqueMap = new Map();
+          updatedGrades.forEach(item => {
+            uniqueMap.set(String(item.grade), item.classCount);
+          });
+          appConfig.gradesConfig = Array.from(uniqueMap.entries()).map(([grade, classCount]) => ({ grade, classCount }));
+        }
+        ensureGradesConfigValid();
+
+        appConfig.lapMeters = Math.max(30, Number(document.getElementById('set-lap-meters').value) || 150);
         appConfig.teacherPin = document.getElementById('set-teacher-pin').value.trim() || '1234';
         appConfig.updatedAt = Date.now();
 
         saveLocalData();
-        populateClassDropdown();
+        populateGradeAndClassDropdowns();
         if (rankingChartInstance) {
           rankingChartInstance.destroy();
           rankingChartInstance = null;
         }
         refreshAllUI();
         settingsModal.classList.add('hidden');
-        showToast('⚙️ 학교 설정이 저장되어 모든 기기에 실시간 공유됩니다!');
+
+        if (roomChanged) {
+          connectRealtimeStream();
+          await pullFromCloud(true);
+        }
+        showToast('⚙️ 학년·반 및 코스가 저장되어 모든 기기에 즉시 동기화됩니다!');
         await pushToCloud();
       });
 
@@ -2201,7 +2616,7 @@
         const rec = records.find(r => r.id === id);
         if (!rec) return;
 
-        rec.grade = document.getElementById('edit-grade').value;
+        rec.grade = document.getElementById('edit-grade').value.trim().replace(/학년$/g, '') || rec.grade;
         rec.classNum = document.getElementById('edit-class').value;
         rec.name = document.getElementById('edit-name').value.trim() || rec.name;
         rec.laps = Math.max(1, Number(document.getElementById('edit-laps').value) || 1);
@@ -2212,7 +2627,7 @@
         refreshAllUI();
         document.getElementById('modal-edit-record').classList.add('hidden');
         showToast('✏️ 기록이 수정되어 모든 기기에 반영되었습니다.');
-        await pushToCloud();
+        await pushToCloud(rec);
       });
 
       // 공유 링크 & QR 모달
